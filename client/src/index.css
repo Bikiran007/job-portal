@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    font-family: Outfit;
+}
+
+/* ApplyJob page styles to match reference layout */
+.min-h-screen {
+    background-color: #ffffff;
+}
+
+/* Hero/header block */
+.bg-sky-50 {
+    background-color: #f0f9ff; /* keep Tailwind-like sky-50 */
+}
+.bg-sky-50 img {
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+    border-radius: 12px;
+}
+.bg-sky-50 h1 {
+    margin: 0;
+    color: #111827; /* gray-900 */
+}
+.bg-sky-50 .flex.flex-wrap span img {
+    width: 18px;
+    height: 18px;
+}
+
+/* Main content typography */
+.rich-text {
+    color: #374151; /* gray-700 */
+    font-size: 15px;
+    line-height: 1.9;
+    margin-top: 8px;
+}
+.rich-text p {
+    margin: 0 0 18px 0;
+}
+
+/* Headings */
+h2.font-bold {
+    color: #111827;
+    font-size: 22px;
+    margin-bottom: 18px;
+}
+
+/* Numbered lists styling */
+.rich-text ol,
+.rich-text ul {
+    margin: 0 0 18px 1.25rem;
+}
+.rich-text ol {
+    list-style-type: decimal;
+}
+.rich-text ol li {
+    color: #6b7280; /* gray-600 */
+    margin-bottom: 10px;
+}
+
+/* Apply button visual style to match screenshot */
+.bg-blue-600 {
+    background-color: #1652ff !important; /* slightly brighter blue */
+    box-shadow: 0 6px 18px rgba(22,82,255,0.16);
+    border-radius: 10px !important;
+    padding: 0.6rem 1.75rem;
+}
+.bg-blue-600.text-white {
+    color: #fff !important;
+    font-weight: 600;
+}
+/* removed invalid selector targeting tailwind utility class names with dots */
+
+/* Layout spacing */
+.container > .bg-white {
+    padding: 0 0 2rem 0;
+}
+
+/* Make sure the descriptions have comfortable max width */
+.min-h-screen .rich-text,
+.min-h-screen h2,
+.min-h-screen .rich-text ul {
+    max-width: 860px;
+}
+
+/* Responsive: slightly reduce heading sizes on small screens */
+@media (max-width: 640px) {
+    h2.font-bold {
+        font-size: 20px;
+    }
+    .bg-sky-50 img {
+        width: 72px;
+        height: 72px;
+    }
+}
