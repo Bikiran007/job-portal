@@ -12,13 +12,13 @@ const Dashboard = () => {
      const renderContent = () => {
         switch(activeTab) {
             case 'add-job':
-                return <AddJob />
+                return <AddJob setActiveTab={setActiveTab} />
             case 'manage-jobs':
-                return <ManageJobs />
+                return <ManageJobs setActiveTab={setActiveTab} />
             case 'view-applications':
-                return <ViewApplications />
+                return <ViewApplications setActiveTab={setActiveTab} />
             default:
-                return <AddJob />
+                return <AddJob setActiveTab={setActiveTab} />
         }
      }
 
