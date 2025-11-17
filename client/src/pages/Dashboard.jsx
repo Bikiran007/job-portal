@@ -1,26 +1,33 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useContext, useEffect } from 'react'
+import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import AddJob from './AddJob'
 import ManageJobs from './ManageJobs'
 import ViewApplications from './ViewApplications'
+import { AppContext } from '../context/AppContext'
 
 const Dashboard = () => {
      const navigate = useNavigate()
-     const [activeTab, setActiveTab] = useState('add-job')
+    const location = useLocation()
+    const activePath = location.pathname.startsWith('/dashboard/') ? location.pathname.split('/dashboard/')[1] : ''
 
-     const renderContent = () => {
-        switch(activeTab) {
-            case 'add-job':
-                return <AddJob setActiveTab={setActiveTab} />
-            case 'manage-jobs':
-                return <ManageJobs setActiveTab={setActiveTab} />
-            case 'view-applications':
-                return <ViewApplications setActiveTab={setActiveTab} />
-            default:
-                return <AddJob setActiveTab={setActiveTab} />
+    const { companyData, setCompanyData, setCompanyToken } = useContext(AppContext)
+
+    // Logout
+    const logout = () => {
+        setCompanyToken(null)
+        localStorage.removeItem('companyToken')
+        setCompanyData(null)
+        navigate('/')
+    }
+
+    useEffect(()=>{
+        if (companyData) {
+            navigate('/dashboard/manage-jobs')
+            
         }
-     }
+
+    },[companyData])
 
   return (
     <div className='min-h-screen'>
@@ -29,17 +36,21 @@ const Dashboard = () => {
         <div className='border-b'>
             <div className='px-5 flex justify-between items-center py-4'>
                 <img onClick={e => navigate('/')} className='max-sm:w-32 cursor-pointer' src={assets.logo} alt="" />
-                <div className='flex items-center gap-3'>
-                    <p className='max-sm:hidden'>Welcome, Bikiran</p>
+                {companyData && (
+                    <div className='flex items-center gap-3'> 
+                    <p className='max-sm:hidden'>Welcome,{companyData.name} </p>
                     <div className='relative group'>
-                        <img className='w-8 border rounded-full' src={assets.company_icon} alt="" />
+                        <img className='w-8 border rounded-full' src={companyData.image} alt="" />
                         <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12'>
                             <ul className='list-none m-0 p-2 bg-white rounded-md border text-sm'>
-                                <li className='py-1 px-2 cursor-pointer pr-10'>Logout</li>
+                                <li onClick={logout} className='py-1 px-2 cursor-pointer pr-10'>Logout</li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
+                )}
+                
             </div>
         </div>
 
@@ -48,23 +59,23 @@ const Dashboard = () => {
              {/* Left Sidebar with option to add job,manage job,view applications */}
              <div className='inline-block min-h-screen border-r-2'>
                 <ul className='flex flex-col items-start pt-5 text-gray-800'>
-                    <button 
-                        onClick={() => setActiveTab('add-job')}
-                        className={`flex items-center p-3 sm:px-6 gap-2 w-full hover:bg-gray-100 ${activeTab === 'add-job' ? 'bg-blue-100 border-r-4 border-blue-500' : ''}`}>
+                        <button 
+                        onClick={() => navigate('/dashboard/add-job')}
+                        className={`flex items-center p-3 sm:px-6 gap-2 w-full hover:bg-gray-100 ${activePath === 'add-job' ? 'bg-blue-100 border-r-4 border-blue-500' : ''}`}>
                         <img className='min-w-4' src={assets.add_icon} alt="" />
                         <p className='max-sm:hidden'>Add Job</p>
                     </button>
 
                     <button 
-                        onClick={() => setActiveTab('manage-jobs')}
-                        className={`flex items-center p-3 sm:px-6 gap-2 w-full hover:bg-gray-100 ${activeTab === 'manage-jobs' ? 'bg-blue-100 border-r-4 border-blue-500' : ''}`}>
+                        onClick={() => navigate('/dashboard/manage-jobs')}
+                        className={`flex items-center p-3 sm:px-6 gap-2 w-full hover:bg-gray-100 ${activePath === 'manage-jobs' ? 'bg-blue-100 border-r-4 border-blue-500' : ''}`}>
                         <img className='min-w-4' src={assets.home_icon} alt="" />
                         <p className='max-sm:hidden'>Manage Jobs</p>
                     </button>
 
                     <button 
-                        onClick={() => setActiveTab('view-applications')}
-                        className={`flex items-center p-3 sm:px-6 gap-2 w-full hover:bg-gray-100 ${activeTab === 'view-applications' ? 'bg-blue-100 border-r-4 border-blue-500' : ''}`}>
+                        onClick={() => navigate('/dashboard/view-applications')}
+                        className={`flex items-center p-3 sm:px-6 gap-2 w-full hover:bg-gray-100 ${activePath === 'view-applications' ? 'bg-blue-100 border-r-4 border-blue-500' : ''}`}>
                         <img className='min-w-4' src={assets.person_tick_icon} alt="" />
                         <p className='max-sm:hidden'>View Applications</p>
                     </button>
@@ -72,7 +83,7 @@ const Dashboard = () => {
              </div>
 
             <div className='flex-1 p-5 mt-0'>
-                {renderContent()}
+                <Outlet />
             </div>
 
         </div>
